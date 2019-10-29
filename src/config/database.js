@@ -8,7 +8,7 @@ module.exports = {
   host: 'localhost',
   username: 'postgres',
   password: 'docker',
-  database: 'gobarber',
+  database: 'gympoint',
   define: {
     timestamps: true, // Garante as colunas createdAt e updatedAt automaticamente
     underscored: true, // Pardoniza a nemenclatura das tabelas com _ no lugar de camelCase
