@@ -5,7 +5,9 @@ import UserController from './app/controllers/UserController';
 
 const routes = new Router();
 
-routes.get('/', StudentController.store);
+routes.post('/students', StudentController.store);
+routes.post('/users', UserController.store);
+
 routes.get('/students', StudentController.index);
 routes.get('/users', UserController.index);
 

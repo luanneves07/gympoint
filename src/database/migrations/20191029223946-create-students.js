@@ -16,6 +16,10 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      age: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       weight: {
         type: Sequelize.DECIMAL,
         allowNull: false,

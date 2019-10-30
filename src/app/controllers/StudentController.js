@@ -13,14 +13,20 @@ class StudentController {
   }
 
   async store(req, res) {
-    const student = await Student.create({
-      name: 'Luan Neves',
-      email: 'luannevessilva@gmail.com',
-      weight: 69.8,
-      height: 1.72,
+    const studentExists = Student.findOne({
+      where: { name: req.body.name, email: req.body.email, age: req.body.age },
     });
 
-    return res.json(student);
+    if (studentExists) {
+      return res
+        .status(400)
+        .json(`The user ${studentExists.name} already existis in our database`);
+    }
+    const { id, name, email, age, weight, height } = await Student.create(
+      req.body
+    );
+
+    return res.json({ id, name, email, age, weight, height });
   }
 }
 
