@@ -2,18 +2,22 @@ import Sequelize, { Model } from 'sequelize';
 
 class User extends Model {
   /**
-   * Metodo chamado pelo sequelize de acordo com a configuracao do projeto
-   * Precisa receber como parametro a conexao com o banco de dados
+   * this methodo is called by index.js of dataBase while it is
+   * loading all models of the application
    */
   static init(connection) {
-    const columns = {
-      name: Sequelize.STRING,
-      email: Sequelize.STRING,
-      password_hash: Sequelize.STRING,
-    };
-    /* O primeiro parametro sao as colunas do banco. No segundo parametro a conexao */
-    super.init(columns, { connection });
+    super.init(
+      {
+        name: Sequelize.STRING,
+        email: Sequelize.STRING,
+        password: Sequelize.VIRTUAL,
+        password_hash: Sequelize.STRING,
+      },
+      { sequelize: connection }
+    );
+
+    return this;
   }
 }
 
-export default new User();
+export default User;

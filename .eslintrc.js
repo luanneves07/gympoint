@@ -17,9 +17,7 @@ module.exports = {
     sourceType: 'module',
   },
   /**
-   * Adiciona regras de exceção para o projeto. Pode ser criado junto com o time
-   * de dev.
-   * Não necessita de "this" obrigatoriamente nos métodos de classe
+   * Add exceptions to extended rules.
    */
   rules: {
     "prettier/prettier": "error",

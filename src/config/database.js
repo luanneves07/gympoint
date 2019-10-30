@@ -1,7 +1,7 @@
 /**
- * A sintaxe de import/export é feita da maneira antiga pois a interface do
- * terminal para o sequelize-cli ainda não consegue identificar a nova
- * terminologia.
+ * This file is used by sequelize-cli, so the syntax of import/export should not
+ * be used here, since it doesn't have an implementation to suport those
+ * keyWords.
  */
 module.exports = {
   dialect: 'postgres',
@@ -10,8 +10,8 @@ module.exports = {
   password: 'docker',
   database: 'gympoint',
   define: {
-    timestamps: true, // Garante as colunas createdAt e updatedAt automaticamente
-    underscored: true, // Pardoniza a nemenclatura das tabelas com _ no lugar de camelCase
+    timestamps: true, // Ensures createdAt and updatedAt columns automatically
+    underscored: true, // Standardize underscore to column names
     underscoredAll: true,
   },
 };
