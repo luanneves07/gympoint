@@ -1,3 +1,4 @@
+import bcrypt from 'bcryptjs';
 import Sequelize, { Model } from 'sequelize';
 
 class User extends Model {
@@ -16,7 +17,23 @@ class User extends Model {
       { sequelize: connection }
     );
 
+    /**
+     * Creates a hash of given password inserted by user before save
+     */
+    this.addHook('beforeSave', async user => {
+      if (user.password) {
+        user.password_hash = await bcrypt.hash(user.password, 8);
+      }
+    });
+
     return this;
+  }
+
+  /**
+   * Verifies if given password matches with stored hash
+   */
+  checkPassword(password) {
+    return bcrypt.compare(password, this.password_hash);
   }
 }
 

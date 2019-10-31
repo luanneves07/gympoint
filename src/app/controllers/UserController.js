@@ -13,13 +13,16 @@ class UserController {
   }
 
   async store(req, res) {
-    const user = await User.create({
-      name: 'Luan Neves da Silva',
-      email: 'luannevessilva@gmail.com',
-      password_hash: 123456789,
-    });
+    const userExists = await User.findOne({ where: { email: req.body.email } });
 
-    return res.json(user);
+    if (userExists) {
+      return res.status(400).json({
+        error: `The email ${userExists.email} exists inside our database. Please, try login or insert another e-mail`,
+      });
+    }
+    const { id, name, email } = await User.create(req.body);
+
+    return res.json({ id, name, email });
   }
 }
 
