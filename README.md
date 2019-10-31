@@ -6,7 +6,7 @@
   Desafio 2: Gympoint, o início
 </h3>
 
-## :rocket: Sobre o desafio
+## :rocket: Sobre o projeto
 
 A aplicação contida neste repositório é um app gerenciador de academia, o **Gympoint**.
 
