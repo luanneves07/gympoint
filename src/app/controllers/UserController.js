@@ -20,6 +20,7 @@ class UserController {
         error: `The email ${userExists.email} exists inside our database. Please, try login or insert another e-mail`,
       });
     }
+
     const { id, name, email } = await User.create(req.body);
 
     return res.json({ id, name, email });
