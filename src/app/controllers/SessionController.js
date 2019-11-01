@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User';
 import authConfig from '../../config/auth';
 /**
- * This classes exists with the objective of maintain an user session when
+ * This class exists with the objective of maintain an user session when
  * the user loggs into the system.
  */
 class SessionController {
