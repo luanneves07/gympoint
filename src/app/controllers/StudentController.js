@@ -28,6 +28,22 @@ class StudentController {
 
     return res.json({ id, name, email, age, weight, height });
   }
+
+  async update(req, res) {
+    const student = Student.findOne({
+      where: { name: req.body.name, email: req.body.email, age: req.body.age },
+    });
+
+    if (!student) {
+      return res.status(401).json({
+        error: `The user ${student.name} does not existis in our database`,
+      });
+    }
+
+    const { name, email, age } = student.update(req.body);
+
+    return req.json({ name, email, age });
+  }
 }
 
 export default new StudentController();

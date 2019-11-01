@@ -3,7 +3,7 @@ import { promisify } from 'util';
 import authConfig from '../../config/auth';
 
 /**
- * this file holds the responsability of verify the token between each requisition
+ * this object holds the responsability of verify the token between each requisition
  * of user to server
  */
 export default async (req, res, next) => {
