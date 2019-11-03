@@ -1,3 +1,5 @@
+import * as Yup from 'yup';
+
 import User from '../models/User';
 /**
  * Since sequelize uses asynchronous process to update data inside database,
@@ -13,6 +15,20 @@ class UserController {
   }
 
   async store(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string()
+        .email()
+        .required(),
+      password: Yup.string()
+        .required()
+        .min(6),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ erro: 'Store validation failed' });
+    }
+
     const userExists = await User.findOne({ where: { email: req.body.email } });
 
     if (userExists) {
@@ -27,18 +43,33 @@ class UserController {
   }
 
   async update(req, res) {
-    const { email, oldPassword } = req.body;
+    const schema = Yup.object().shape({
+      name: Yup.string(),
+      email: Yup.string().email(),
+      oldPassword: Yup.string().min(6),
+      password: Yup.string()
+        .min(6)
+        .when('oldPassword', (oldPassword, field) =>
+          oldPassword ? field.required() : field
+        ),
+      confirmPassword: Yup.string().when('password', (password, field) =>
+        password ? field.required() : field
+      ),
+    });
 
-    const user = User.findByPk(req.userId);
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ erro: 'Update validation failed' });
+    }
+
+    const { email, oldPassword } = req.body;
+    const user = await User.findByPk(req.userId);
 
     if (email !== user.email) {
-      const userExists = await User.findOne({
-        where: { email },
-      });
+      const userExists = await User.findOne({ where: { email } });
 
       if (userExists) {
         return res.status(400).json({
-          error: `The email ${userExists.email} exists inside our database. Please, try login or insert another e-mail`,
+          error: `User ${user.email} already exists`,
         });
       }
     }
