@@ -1,5 +1,4 @@
 import * as Yup from 'yup';
-
 import User from '../models/User';
 /**
  * Since sequelize uses asynchronous process to update data inside database,
