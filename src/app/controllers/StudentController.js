@@ -13,9 +13,7 @@ class StudentController {
   }
 
   async store(req, res) {
-    const studentExists = Student.findOne({
-      where: { name: req.body.name, email: req.body.email, age: req.body.age },
-    });
+    const studentExists = Student.findOne({ where: { email: req.body.email } });
 
     if (studentExists) {
       return res
@@ -30,9 +28,9 @@ class StudentController {
   }
 
   async update(req, res) {
-    const student = Student.findOne({
-      where: { name: req.body.name, email: req.body.email, age: req.body.age },
-    });
+    const { name, email } = req.body;
+
+    const student = Student.findOne({ where: { email } });
 
     if (!student) {
       return res.status(401).json({
@@ -40,7 +38,7 @@ class StudentController {
       });
     }
 
-    const { name, email, age } = student.update(req.body);
+    const { age } = student.update(req.body);
 
     return req.json({ name, email, age });
   }
