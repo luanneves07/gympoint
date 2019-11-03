@@ -6,7 +6,7 @@ import User from '../models/User';
  */
 class UserController {
   /**
-   * List all users registered
+   * Lists all users registered
    */
   async index(req, res) {
     const users = await User.findAll();
@@ -25,7 +25,7 @@ class UserController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ erro: 'Store validation failed' });
+      return res.status(400).json({ erro: 'Invalid user store data' });
     }
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
@@ -57,7 +57,7 @@ class UserController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ erro: 'Update validation failed' });
+      return res.status(400).json({ erro: 'invalid user update data' });
     }
 
     const { email, oldPassword } = req.body;
