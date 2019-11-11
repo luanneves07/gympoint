@@ -44,7 +44,6 @@ class StudentController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
-      id: Yup.number().required(),
       name: Yup.string(),
       email: Yup.string().email(),
       age: Yup.number(),
@@ -56,15 +55,17 @@ class StudentController {
       return res.status(400).json({ error: 'Invalid student update data' });
     }
 
-    const { id, name, email } = req.body;
+    console.log(req.params.id);
 
-    const student = await Student.findByPk(id);
+    const student = await Student.findByPk(req.params.id);
 
     if (!student) {
       return res.status(401).json({
-        error: `The user ${student.name} does not existis in our database`,
+        error: `The user does not existis in our database`,
       });
     }
+
+    const { name, email } = req.body;
 
     const { age } = student.update(req.body);
 
