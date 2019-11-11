@@ -55,8 +55,6 @@ class StudentController {
       return res.status(400).json({ error: 'Invalid student update data' });
     }
 
-    console.log(req.params.id);
-
     const student = await Student.findByPk(req.params.id);
 
     if (!student) {
