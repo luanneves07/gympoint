@@ -9,11 +9,12 @@ import databaseConfig from '../config/database';
 
 import User from '../app/models/User';
 import Student from '../app/models/Student';
+import Plan from '../app/models/Plan';
 
 /**
  * This field should have all Models of the project.
  */
-const models = [User, Student];
+const models = [User, Student, Plan];
 
 class Database {
   constructor() {
