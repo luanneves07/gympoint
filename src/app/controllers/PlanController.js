@@ -3,8 +3,8 @@ import Plan from '../models/Plan';
 
 class GymPlanController {
   async index(req, res) {
-    const plan = await Plan.findAll();
-    return res.json(plan);
+    const plans = await Plan.findAll();
+    return res.json(plans);
   }
 
   async store(req, res) {
@@ -51,19 +51,19 @@ class GymPlanController {
   async delete(req, res) {
     const { id } = req.params;
     const plan = await Plan.findByPk(id);
-    if (plan) {
-      try {
-        await Plan.destroy({ where: { id } });
-        return res.json({ deleted: `Plan ${plan.title} deleted!` });
-      } catch (error) {
-        return res
-          .status(400)
-          .json({ error: `Failed to delete plan ${plan.title}` });
-      }
+    if (!plan) {
+      return res
+        .status(400)
+        .json({ error: `Unnable to locate plan number ${id}` });
     }
-    return res
-      .status(400)
-      .json({ error: `Unnable to locate plan number ${id}` });
+    try {
+      await Plan.destroy({ where: { id } });
+      return res.json({ deleted: `Plan ${plan.title} has been deleted!` });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: `Failed to delete plan ${plan.title}` });
+    }
   }
 }
 
