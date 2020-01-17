@@ -74,7 +74,13 @@ class RegistrationController {
     await Mail.sendMail({
       to: `${isStudent.name} <${isStudent.email}>`,
       subject: 'Welcome to GymPoint',
-      text: 'Registration has been done with success!',
+      template: 'welcome',
+      context: {
+        student: isStudent.name,
+        plan: validPlan.title,
+        end_date: formattedDate,
+        price,
+      },
     });
 
     return res.json({
