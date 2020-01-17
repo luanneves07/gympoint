@@ -3,6 +3,9 @@ import CheckIn from '../models/CheckIn';
 import Student from '../models/Student';
 import Registration from '../models/Registration';
 
+const MAXIMUM_ENTRANCE = 5;
+const INTERVAL_CHECKIN_ANALYSIS_DAYS = 7;
+
 class CheckInController {
   async index(req, res) {
     const { studentId } = req.params;
@@ -19,9 +22,6 @@ class CheckInController {
   }
 
   async store(req, res) {
-    const MAXIMUM_ENTRANCE = 5;
-    const INTERVAL_CHECKIN_ANALYSIS_DAYS = 7;
-
     const { studentId } = req.params;
 
     const isStudent = await Student.findByPk(studentId);
