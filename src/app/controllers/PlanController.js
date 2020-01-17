@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import Plan from '../models/Plan';
 
-class GymPlanController {
+class PlanController {
   async index(req, res) {
     const plans = await Plan.findAll();
     return res.json(plans);
@@ -67,4 +67,4 @@ class GymPlanController {
   }
 }
 
-export default new GymPlanController();
+export default new PlanController();

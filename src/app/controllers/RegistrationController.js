@@ -1,8 +1,13 @@
 import * as Yup from 'yup';
-import { addMonths, isBefore, startOfHour, parseISO } from 'date-fns';
+import { addMonths, isBefore, startOfHour, parseISO, format } from 'date-fns';
+import { en } from 'date-fns/locale';
 import Plan from '../models/Plan';
 import Student from '../models/Student';
 import Registration from '../models/Registration';
+import Notification from '../schema/Notification';
+
+import RegistrationMail from '../jobs/RegistrationMail';
+import Queue from '../../lib/Queue';
 
 class RegistrationController {
   async index(req, res) {
@@ -55,7 +60,33 @@ class RegistrationController {
       price,
     });
 
-    return res.json({ student_id, plan_id, start_date, end_date, price });
+    const formattedDate = format(hourStart, "MMMM dd', at' H:mm'h'", {
+      locale: en,
+    });
+
+    await Notification.create({
+      content: `New registration done to ${isStudent.name} to start ${formattedDate}`,
+      /**
+       * User Id that cames in JWT token. Its the administrator of the system
+       */
+      user: req.userId,
+    });
+
+    await Queue.add(RegistrationMail.key, {
+      name: isStudent.name,
+      email: isStudent.email,
+      title: validPlan.title,
+      end_date,
+      price,
+    });
+
+    return res.json({
+      student_id,
+      plan_id,
+      start_date,
+      end_date,
+      price,
+    });
   }
 
   async update(req, res) {
