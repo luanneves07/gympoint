@@ -6,7 +6,8 @@ import Student from '../models/Student';
 import Registration from '../models/Registration';
 import Notification from '../schema/Notification';
 
-import Mail from '../../lib/Mail';
+import RegistrationMail from '../jobs/RegistrationMail';
+import Queue from '../../lib/Queue';
 
 class RegistrationController {
   async index(req, res) {
@@ -71,16 +72,12 @@ class RegistrationController {
       user: req.userId,
     });
 
-    await Mail.sendMail({
-      to: `${isStudent.name} <${isStudent.email}>`,
-      subject: 'Welcome to GymPoint',
-      template: 'welcome',
-      context: {
-        student: isStudent.name,
-        plan: validPlan.title,
-        end_date: formattedDate,
-        price,
-      },
+    await Queue.add(RegistrationMail.key, {
+      name: isStudent.name,
+      email: isStudent.email,
+      title: validPlan.title,
+      end_date,
+      price,
     });
 
     return res.json({
